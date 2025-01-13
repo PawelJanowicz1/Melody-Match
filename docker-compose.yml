@@ -1,0 +1,43 @@
+version: '3.9'
+services:
+  mysql-mm:
+    image: mysql:latest
+    ports:
+      - "3309:3306"
+    restart: unless-stopped
+    environment:
+      MYSQL_USER: mysql
+      MYSQL_ROOT_PASSWORD: StrongPass123!
+      MYSQL_PASSWORD: StrongPass123!
+      MYSQL_DATABASE: melodymatch
+    volumes:
+      - melodymatch-mysql-data:/var/lib/mysql
+    networks:
+      - melodymatch-net
+
+  keycloak-mm:
+    image: quay.io/keycloak/keycloak:24.0.3
+    command: start-dev
+    ports:
+      - "8888:8080"
+    restart: unless-stopped
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: mysql
+      KC_DB_USERNAME: mysql
+      KC_DB_PASSWORD: StrongPass123!
+      KC_DB_URL: jdbc:mysql://mysql-mm:3306/melodymatch?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+      KC_FEATURES: token-exchange,admin-fine-grained-authz
+      KC_HOSTNAME: localhost
+    networks:
+      - melodymatch-net
+    volumes:
+      - ./extensions:/opt/keycloak/providers/
+
+volumes:
+  melodymatch-mysql-data:
+
+networks:
+  melodymatch-net:
+    name: melodymatch-net

@@ -1,21 +1,24 @@
 package org.example.melodymatch.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import org.example.melodymatch.utils.Role;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.NoArgsConstructor;
 
+@Entity
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "users")
+@NoArgsConstructor
 public class User {
-    @Id
-    private String id;
-    private String username;
-    private String password;
-    private Role role;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String username;
+
+    private String password;
 }
