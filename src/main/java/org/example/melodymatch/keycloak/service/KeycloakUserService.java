@@ -8,6 +8,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 public interface KeycloakUserService {
 
     UserRegistrationRecord createUser(UserRegistrationRecord userRegistrationRecord);
+    String login(String username, String password);
     UserRepresentation getUserByJwt(Jwt jwt);
     void deleteUserByJwt(Jwt jwt);
     void emailVerification(String userId);

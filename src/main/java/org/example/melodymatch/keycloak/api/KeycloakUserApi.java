@@ -23,6 +23,11 @@ public class KeycloakUserApi {
         return keycloakUserService.createUser(userRegistrationRecord);
     }
 
+    @PostMapping("/login")
+    public String login(@RequestParam String username, @RequestParam String password) {
+        return keycloakUserService.login(username, password);
+    }
+
     @GetMapping("/my-info")
     public UserRepresentation getUser(@AuthenticationPrincipal Jwt jwt) {
         return keycloakUserService.getUserByJwt(jwt);
