@@ -17,13 +17,13 @@ public class KeycloakUserApi {
     private final KeycloakUserService keycloakUserService;
 
 
-    @PostMapping("create")
+    @PostMapping("/create")
     public UserRegistrationRecord createUser(@RequestBody UserRegistrationRecord userRegistrationRecord) {
 
         return keycloakUserService.createUser(userRegistrationRecord);
     }
 
-    @GetMapping("myinfo")
+    @GetMapping("/my-info")
     public UserRepresentation getUser(@AuthenticationPrincipal Jwt jwt) {
         return keycloakUserService.getUserByJwt(jwt);
     }

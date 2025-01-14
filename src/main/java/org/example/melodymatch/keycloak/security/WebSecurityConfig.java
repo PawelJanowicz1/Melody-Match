@@ -44,6 +44,7 @@ public class WebSecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> {
             web.ignoring().requestMatchers(
+                    "/users/create",
                     "/v3/api-docs/**",
                     "/configuration/**",
                     "/swagger-ui.html",
