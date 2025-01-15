@@ -107,7 +107,7 @@ public class KeycloakUserServiceImpl implements KeycloakUserService {
             form.param("password", password);
 
             Response response = ClientBuilder.newClient()
-                    .target(authServerUrl)
+                    .target(authServerUrl + "/token")
                     .request(MediaType.APPLICATION_JSON)
                     .post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED));
 
