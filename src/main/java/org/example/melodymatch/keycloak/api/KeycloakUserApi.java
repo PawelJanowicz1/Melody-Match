@@ -17,10 +17,14 @@ public class KeycloakUserApi {
     private final KeycloakUserService keycloakUserService;
 
 
-    @PostMapping("/create")
+    @PostMapping("/create-user")
     public UserRegistrationRecord createUser(@RequestBody UserRegistrationRecord userRegistrationRecord) {
-
         return keycloakUserService.createUser(userRegistrationRecord);
+    }
+
+    @PostMapping("/create-admin")
+    public UserRegistrationRecord createAdmin(@RequestBody UserRegistrationRecord userRegistrationRecord) {
+        return keycloakUserService.createAdmin(userRegistrationRecord);
     }
 
     @PostMapping("/login")

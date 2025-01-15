@@ -7,7 +7,9 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.example.melodymatch.keycloak.dto.UserRegistrationRecord;
+import org.keycloak.OAuth2Constants;
 import org.keycloak.admin.client.Keycloak;
+import org.keycloak.admin.client.KeycloakBuilder;
 import org.keycloak.admin.client.resource.*;
 import org.keycloak.representations.AccessTokenResponse;
 import org.keycloak.representations.idm.CredentialRepresentation;
@@ -16,14 +18,9 @@ import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
-
-import static com.stripe.Stripe.clientId;
 
 @Service
 @Slf4j
@@ -40,6 +37,9 @@ public class KeycloakUserServiceImpl implements KeycloakUserService {
 
     @Value("${keycloak.adminClientSecret}")
     private String clientSecret;
+
+    @Value("${keycloak.urls.admin-api}")
+    private String adminApiUrl;
 
     private Keycloak keycloak;
 
@@ -97,6 +97,55 @@ public class KeycloakUserServiceImpl implements KeycloakUserService {
     }
 
     @Override
+    public UserRegistrationRecord createAdmin(UserRegistrationRecord userRegistrationRecord) {
+
+        if (userRegistrationRecord.username() == null || userRegistrationRecord.username().isEmpty()) {
+            throw new IllegalArgumentException("Username is required");
+        }
+
+        UsersResource usersResource = getUsersResource();
+
+        log.info("Started creating admin: {}", userRegistrationRecord.username());
+
+        UserRepresentation user = new UserRepresentation();
+        user.setEnabled(true);
+        user.setUsername(userRegistrationRecord.username());
+        user.setEmail(userRegistrationRecord.email());
+        user.setFirstName(userRegistrationRecord.firstName());
+        user.setLastName(userRegistrationRecord.lastName());
+        user.setEmailVerified(true);
+
+        CredentialRepresentation credentialRepresentation = new CredentialRepresentation();
+        credentialRepresentation.setValue(userRegistrationRecord.password());
+        credentialRepresentation.setTemporary(false);
+        credentialRepresentation.setType(CredentialRepresentation.PASSWORD);
+
+        user.setCredentials(Collections.singletonList(credentialRepresentation));
+
+        Response response = usersResource.create(user);
+
+        String responseBody = response.readEntity(String.class);
+        log.info("Response from Keycloak: status = {}, body = {}", response.getStatus(), responseBody);
+
+        if (response.getStatus() == 409) {
+            log.error("Failed to create admin: {}, details: {}", response.getStatus(), responseBody);
+            throw new IllegalArgumentException("Admin already exists: " + responseBody);
+        } else if (response.getStatus() != 201) {
+            log.error("Failed to create user: {}, details: {}", response.getStatus(), responseBody);
+            throw new RuntimeException("Failed to create admin: " + responseBody);
+        }
+
+        String userId = usersResource.search(userRegistrationRecord.username()).get(0).getId();
+
+        RoleRepresentation userRole = keycloak.realm(realm).roles().get("ADMIN").toRepresentation();
+        usersResource.get(userId).roles().realmLevel().add(Collections.singletonList(userRole));
+
+        log.info("Admin {} was successfully created with ID: {}", userRegistrationRecord.username(), userId);
+
+        return userRegistrationRecord;
+    }
+
+    @Override
     public String login(String username, String password) {
         try {
             Form form = new Form();
@@ -126,8 +175,15 @@ public class KeycloakUserServiceImpl implements KeycloakUserService {
     }
 
     private UsersResource getUsersResource() {
-        RealmResource realm1 = keycloak.realm(realm);
-        return realm1.users();
+        Keycloak adminKeycloak = KeycloakBuilder.builder()
+                .serverUrl(adminApiUrl)
+                .realm(realm)
+                .grantType(OAuth2Constants.CLIENT_CREDENTIALS)
+                .clientId(clientId)
+                .clientSecret(clientSecret)
+                .build();
+
+        return adminKeycloak.realm(realm).users();
     }
 
     @Override

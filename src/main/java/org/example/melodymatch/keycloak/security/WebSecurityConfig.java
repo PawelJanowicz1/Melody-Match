@@ -22,31 +22,35 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-
-
         return httpSecurity
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/users/login", "/users/create").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/test/anonymous", "/test/anonymous/**", "/users/**").permitAll()
+                        .requestMatchers("/users/login", "/users/create-user", "/users/create-admin").permitAll()
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/configuration/**", "/webjars/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/public/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/public/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/public/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/public/**").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/test/anonymous", "/test/anonymous/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/test/admin", "/test/admin/**").hasRole(ADMIN)
                         .requestMatchers(HttpMethod.GET, "/test/user", "/test/user/**").hasAnyRole(ADMIN, USER)
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
-                        .jwt(jwt -> jwt
-                                .jwtAuthenticationConverter(jwtAuthConverter)
-                        )
+                        .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthConverter))
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
     }
+
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> {
             web.ignoring().requestMatchers(
                     "/users/login",
-                    "/users/create",
+                    "/users/create-user",
+                    "/users/create-admin",
                     "/v3/api-docs/**",
                     "/configuration/**",
                     "/swagger-ui.html",
