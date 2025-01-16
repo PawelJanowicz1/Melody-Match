@@ -19,7 +19,7 @@ public class AccountModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "account_id")
-    private Integer accountId;
+    private Long accountId;
 
     @Valid @Embedded
     private FirstName firstName;

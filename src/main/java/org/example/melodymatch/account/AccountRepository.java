@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface AccountRepository extends JpaRepository<AccountModel, Long> {
 
     @Query("SELECT a FROM AccountModel a WHERE a.phoneNumber.phoneNumber = :phoneNumber")
-    Optional<AccountModel> findByPhoneNumber_PhoneNumber(String phoneNumber);
+    Optional<AccountModel>findByPhoneNumber_PhoneNumber(String phoneNumber);
 
     List<AccountModel> findByRoleAndIsActiveTrue(UserRole role);
 

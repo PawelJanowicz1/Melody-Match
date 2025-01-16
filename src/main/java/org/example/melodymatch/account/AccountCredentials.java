@@ -23,7 +23,7 @@ public class AccountCredentials implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "account_id")
-    private int accountId;
+    private Long accountId;
 
     @Valid @Embedded
     private PhoneNumber phoneNumber;
