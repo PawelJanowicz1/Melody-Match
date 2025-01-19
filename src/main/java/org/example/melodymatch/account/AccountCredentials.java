@@ -14,7 +14,7 @@ import org.example.melodymatch.account.value_object.UserRole;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "account")
+@Table(name = "account_credentials")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
