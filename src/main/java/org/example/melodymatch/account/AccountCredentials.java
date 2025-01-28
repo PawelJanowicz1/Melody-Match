@@ -10,7 +10,6 @@ import org.example.melodymatch.account.value_object.EncodedPassword;
 import org.example.melodymatch.account.value_object.AccountLocked;
 import org.example.melodymatch.account.value_object.PhoneNumber;
 import org.example.melodymatch.account.value_object.UserRole;
-
 import java.io.Serializable;
 
 @Entity
