@@ -5,7 +5,7 @@ MelodyMatch is an application that fetches 5 songs from the Spotify API based on
 ## :hammer_and_wrench: Used Technologies
 
 * Java
-* Spring (Boot)
+* Spring Boot
 * Maven
 * Lombok
 
