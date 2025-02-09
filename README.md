@@ -18,3 +18,9 @@ Happy json response      |  Happy json response (pretty)
 Sad json response      |  Sad json response (pretty)
 :------------------------:|:-------------------------:
 ![Checkout](src/main/resources/static/images/json_response_sad_from_spotify_api.png)  |  ![Register page](src/main/resources/static/images/json_response_sad_from_spotify_api_pretty.png)
+
+:memo: TODO
+
+* Optimize song fetching based on more mood parameters.
+*  Add support for saving and managing favorite songs.
+*   Add user authentication for personalized playlists.
