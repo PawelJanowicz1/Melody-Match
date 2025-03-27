@@ -2,14 +2,13 @@ package org.example.melodymatch.spotify;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+
 import java.util.Base64;
 
 @Service
@@ -24,42 +23,41 @@ public class SpotifyAuthService {
     private String accessToken;
     private long tokenExpirationTime = 0;
 
+    private final WebClient webClient;
+
+    public SpotifyAuthService(WebClient.Builder webClientBuilder) {
+        this.webClient = webClientBuilder
+                .baseUrl("https://accounts.spotify.com")
+                .build();
+    }
+
     @PostConstruct
     public void init() {
-        fetchAccessToken();
+        // Prefetch token przy starcie
+        getAccessToken().subscribe();
     }
 
-    private void fetchAccessToken() {
-        try {
-            String authUrl = "https://accounts.spotify.com/api/token";
-            RestTemplate restTemplate = new RestTemplate();
+    private Mono<SpotifyTokenResponse> fetchAccessToken() {
+        String credentials = Base64.getEncoder().encodeToString((clientId + ":" + clientSecret).getBytes());
 
-            String credentials = clientId + ":" + clientSecret;
-            String encodedCredentials = Base64.getEncoder().encodeToString(credentials.getBytes());
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("Authorization", "Basic " + encodedCredentials);
-            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
-            MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-            body.add("grant_type", "client_credentials");
-
-            HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, headers);
-            ResponseEntity<SpotifyTokenResponse> response = restTemplate.postForEntity(authUrl, request, SpotifyTokenResponse.class);
-
-            if (response.getBody() != null) {
-                accessToken = response.getBody().getAccessToken();
-                tokenExpirationTime = System.currentTimeMillis() + (response.getBody().getExpiresIn() * 1000);
-            }
-        } catch (Exception e) {
-            System.err.println("❌ Error fetching access token: " + e.getMessage());
-        }
+        return webClient.post()
+                .uri("/api/token")
+                .header(HttpHeaders.AUTHORIZATION, "Basic " + credentials)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .body(BodyInserters.fromFormData("grant_type", "client_credentials"))
+                .retrieve()
+                .bodyToMono(SpotifyTokenResponse.class);
     }
 
-    public String getAccessToken() {
+    public Mono<String> getAccessToken() {
         if (accessToken == null || System.currentTimeMillis() >= tokenExpirationTime) {
-            fetchAccessToken();
+            return fetchAccessToken()
+                    .doOnNext(resp -> {
+                        accessToken = resp.getAccessToken();
+                        tokenExpirationTime = System.currentTimeMillis() + resp.getExpiresIn() * 1000;
+                    })
+                    .map(SpotifyTokenResponse::getAccessToken);
         }
-        return accessToken;
+        return Mono.just(accessToken);
     }
 }

@@ -1,13 +1,14 @@
 package org.example.melodymatch.spotify;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+
 import java.util.Base64;
 
 @RestController
@@ -24,6 +25,12 @@ public class SpotifyAuthController {
 
     private String accessToken;
 
+    private final WebClient webClient;
+
+    public SpotifyAuthController(WebClient.Builder webClientBuilder) {
+        this.webClient = webClientBuilder.build();
+    }
+
     @GetMapping("/login")
     public String login() {
         String authUrl = "https://accounts.spotify.com/authorize" +
@@ -35,30 +42,24 @@ public class SpotifyAuthController {
     }
 
     @GetMapping("/callback")
-    public String callback(@RequestParam("code") String code) {
+    public Mono<String> callback(@RequestParam("code") String code) {
         String tokenUrl = "https://accounts.spotify.com/api/token";
-        RestTemplate restTemplate = new RestTemplate();
-
         String credentials = clientId + ":" + clientSecret;
         String encodedCredentials = Base64.getEncoder().encodeToString(credentials.getBytes());
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Basic " + encodedCredentials);
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
-        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add("grant_type", "authorization_code");
-        body.add("code", code);
-        body.add("redirect_uri", redirectUri);
-
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, headers);
-        ResponseEntity<SpotifyTokenResponse> response = restTemplate.postForEntity(tokenUrl, request, SpotifyTokenResponse.class);
-
-        if (response.getBody() != null) {
-            accessToken = response.getBody().getAccessToken();
-            return "Access token received: " + accessToken;
-        } else {
-            return "Error retrieving access token!";
-        }
+        return webClient.post()
+                .uri(tokenUrl)
+                .header("Authorization", "Basic " + encodedCredentials)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .body(BodyInserters.fromFormData("grant_type", "authorization_code")
+                        .with("code", code)
+                        .with("redirect_uri", redirectUri))
+                .retrieve()
+                .bodyToMono(SpotifyTokenResponse.class)
+                .map(response -> {
+                    accessToken = response.getAccessToken();
+                    return "Access token received: " + accessToken;
+                })
+                .onErrorResume(e -> Mono.just("Error retrieving access token: " + e.getMessage()));
     }
 }
