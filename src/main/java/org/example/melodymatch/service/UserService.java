@@ -11,17 +11,17 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final UserRepository repo;
+    private final UserRepository userRepository;
     private final PasswordEncoder encoder;
 
     public User register(UserDto dto) {
-        if(repo.existsByUsername(dto.username())) {
+        if(userRepository.existsByUsername(dto.username())) {
             throw new RuntimeException("Username taken");
         }
         User user = new User();
         user.setUsername(dto.username());
         user.setPassword(encoder.encode(dto.password()));
         user.setEmail(dto.email());
-        return repo.save(user);
+        return userRepository.save(user);
     }
 }
