@@ -7,6 +7,7 @@ MelodyMatch is an application that fetches 5 songs from the Spotify API based on
 * Java
 * Spring Boot
 * Spring Data JPA / Hibernate
+* MySql
 * Maven
 * Lombok
 
@@ -14,11 +15,15 @@ MelodyMatch is an application that fetches 5 songs from the Spotify API based on
 
 Happy json response      |  Happy json response (pretty)
 :------------------------:|:-------------------------:
-![Menu page](src/main/resources/static/images/json_response_happy_from_spotify_api.png)  |  ![Cart](src/main/resources/static/images/json_response_happy_from_spotify_api_pretty.png)
+![Happy json response](src/main/resources/static/images/json_response_happy_from_spotify_api.png)  |  ![Happy json response (pretty)](src/main/resources/static/images/json_response_happy_from_spotify_api_pretty.png)
 
 Sad json response      |  Sad json response (pretty)
 :------------------------:|:-------------------------:
-![Checkout](src/main/resources/static/images/json_response_sad_from_spotify_api.png)  |  ![Register page](src/main/resources/static/images/json_response_sad_from_spotify_api_pretty.png)
+![Sad json response](src/main/resources/static/images/json_response_sad_from_spotify_api.png)  |  ![Sad json response (pretty)](src/main/resources/static/images/json_response_sad_from_spotify_api_pretty.png)
+
+Register user      |  Login
+:------------------------:|:-------------------------:
+![Register user](src/main/resources/static/images/register.png)  |  ![Login](src/main/resources/static/images/login.png)
 
 :memo: TODO
 
