@@ -25,6 +25,10 @@ Register user      |  Login
 :------------------------:|:-------------------------:
 ![Register user](src/main/resources/static/images/register.png)  |  ![Login](src/main/resources/static/images/login.png)
 
+Login success      |  Login failed
+:------------------------:|:-------------------------:
+![Login success](src/main/resources/static/images/success_login.png)  |  ![Login failed](src/main/resources/static/images/failed_login.png)
+
 :memo: TODO
 
 * Optimize song fetching based on more mood parameters.
