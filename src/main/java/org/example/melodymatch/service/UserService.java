@@ -29,6 +29,18 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User registerAdmin(RegisterDto dto) {
+        if(userRepository.existsByUsername(dto.username())) {
+            throw new RuntimeException("Username taken");
+        }
+        User user = new User();
+        user.setUsername(dto.username());
+        user.setPassword(encoder.encode(dto.password()));
+        user.setEmail(dto.email());
+        user.setRole("ADMIN");
+        return userRepository.save(user);
+    }
+
     public String login(LoginRequest request) {
         User user = userRepository.findByUsername(request.username())
                 .orElseThrow(() -> new RuntimeException("Invalid credentials"));

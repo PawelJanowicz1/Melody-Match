@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(mvc.pattern("/api/auth/**")).permitAll()
                         .requestMatchers(mvc.pattern("/api/admin")).hasRole("ADMIN")
-                        .requestMatchers(mvc.pattern("/api/user")).hasRole("USER")
+                        .requestMatchers(mvc.pattern("/api/user")).hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())

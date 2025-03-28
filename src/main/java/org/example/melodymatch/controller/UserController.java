@@ -18,11 +18,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserService userService;
 
-    @PostMapping("/register")
-    public ResponseEntity<String> register(@Valid @RequestBody RegisterDto dto) {
+    @PostMapping("/user/register")
+    public ResponseEntity<String> registerUser(@Valid @RequestBody RegisterDto dto) {
         try {
             userService.registerUser(dto);
             return ResponseEntity.ok("User registered");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/admin/register")
+    public ResponseEntity<String> registerAdmin(@Valid @RequestBody RegisterDto dto) {
+        try {
+            userService.registerAdmin(dto);
+            return ResponseEntity.ok("Admin registered");
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
