@@ -9,8 +9,10 @@ import java.security.Key;
 import java.util.Date;
 
 public class JwtUtil {
+
     @Getter
     private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+
     private static final long expiration = 3600000;
 
     public static String generateToken(String username, String role) {
@@ -21,5 +23,14 @@ public class JwtUtil {
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(key)
                 .compact();
+    }
+
+    public static String getUsernameFromToken(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
 }

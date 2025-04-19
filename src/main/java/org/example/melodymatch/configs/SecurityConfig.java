@@ -27,9 +27,10 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(mvc.pattern("/api/auth/**")).permitAll()
-                        .requestMatchers(mvc.pattern("/api/admin")).hasRole("ADMIN")
-                        .requestMatchers(mvc.pattern("/api/user")).hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/api/auth/**", "/music/mood/**").permitAll()
+                        .requestMatchers(mvc.pattern("/api/admin/**")).hasRole("ADMIN")
+                        .requestMatchers(mvc.pattern("/api/user/**")).hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/api/user/songs/**").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())

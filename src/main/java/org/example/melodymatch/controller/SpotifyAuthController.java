@@ -1,5 +1,6 @@
-package org.example.melodymatch.spotify;
+package org.example.melodymatch.controller;
 
+import org.example.melodymatch.spotify.SpotifyTokenResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;

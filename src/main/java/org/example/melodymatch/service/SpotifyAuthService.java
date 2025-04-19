@@ -1,6 +1,7 @@
-package org.example.melodymatch.spotify;
+package org.example.melodymatch.service;
 
 import jakarta.annotation.PostConstruct;
+import org.example.melodymatch.spotify.SpotifyTokenResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
