@@ -9,11 +9,8 @@ import org.example.melodymatch.service.SongService;
 import org.example.melodymatch.service.SpotifyAuthService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
-
 import java.util.List;
 
 @RestController

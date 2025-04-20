@@ -39,7 +39,7 @@ public class MusicController {
                                 .toEntity(String.class)
                 )
                 .onErrorResume(e ->
-                        Mono.just(ResponseEntity.internalServerError().body("Błąd: " + e.getMessage()))
+                        Mono.just(ResponseEntity.internalServerError().body("Error: " + e.getMessage()))
                 );
     }
 }
