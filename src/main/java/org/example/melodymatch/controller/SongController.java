@@ -8,9 +8,11 @@ import org.example.melodymatch.model.Song;
 import org.example.melodymatch.service.SongService;
 import org.example.melodymatch.service.SpotifyAuthService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
+
 import java.util.List;
 
 @RestController
@@ -65,5 +67,16 @@ public class SongController {
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(new SongDto("Error", e.getMessage(), ""));
         }
+    }
+
+    @DeleteMapping("/by-mood/{id}")
+    public ResponseEntity<Void> deleteSongById(
+            @PathVariable Long id,
+            @RequestHeader("Authorization") String authHeader) {
+
+        String jwt = authHeader.replace("Bearer ", "");
+        songService.deleteSongById(id, jwt);
+
+        return ResponseEntity.ok().build();
     }
 }

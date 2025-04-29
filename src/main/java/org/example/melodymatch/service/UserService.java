@@ -3,7 +3,6 @@ package org.example.melodymatch.service;
 import lombok.RequiredArgsConstructor;
 import org.example.melodymatch.configs.JwtUtil;
 import org.example.melodymatch.dto.LoginRequest;
-import org.example.melodymatch.dto.LoginResponse;
 import org.example.melodymatch.dto.RegisterDto;
 import org.example.melodymatch.model.User;
 import org.example.melodymatch.repository.UserRepository;
