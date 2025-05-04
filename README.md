@@ -16,11 +16,11 @@ MelodyMatch is an application that fetches 4 songs from the Spotify API based on
 
 ## :camera: Screenshots
 
-Happy json response      |  Happy json response (pretty)
+Happy json response (Unregistered)     |  Happy json response (Unregistered) (pretty)
 :------------------------:|:-------------------------:
 ![Happy json response](src/main/resources/static/images/json_response_happy_from_spotify_api.png)  |  ![Happy json response (pretty)](src/main/resources/static/images/json_response_happy_from_spotify_api_pretty.png)
 
-Sad json response      |  Sad json response (pretty)
+Sad json response (Unregistered)     |  Sad json response (Unregistered) (pretty)
 :------------------------:|:-------------------------:
 ![Sad json response](src/main/resources/static/images/json_response_sad_from_spotify_api.png)  |  ![Sad json response (pretty)](src/main/resources/static/images/json_response_sad_from_spotify_api_pretty.png)
 
@@ -32,8 +32,3 @@ Login success      |  Login failed
 :------------------------:|:-------------------------:
 ![Login success](src/main/resources/static/images/success_login.png)  |  ![Login failed](src/main/resources/static/images/failed_login.png)
 
-:memo: TODO
-
-* Optimize song fetching based on more mood parameters.
-*  Add support for saving and managing favorite songs.
-*   Add user authentication for personalized playlists.
