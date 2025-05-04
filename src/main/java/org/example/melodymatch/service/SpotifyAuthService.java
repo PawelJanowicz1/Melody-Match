@@ -33,7 +33,6 @@ public class SpotifyAuthService {
 
     @PostConstruct
     public void init() {
-        // Prefetch token przy starcie
         getAccessToken().subscribe();
     }
 

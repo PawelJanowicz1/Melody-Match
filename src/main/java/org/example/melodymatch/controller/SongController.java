@@ -3,7 +3,7 @@ package org.example.melodymatch.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.example.melodymatch.Mood;
+import org.example.melodymatch.enums.Mood;
 import org.example.melodymatch.dto.SongDto;
 import org.example.melodymatch.model.Song;
 import org.example.melodymatch.service.SongService;

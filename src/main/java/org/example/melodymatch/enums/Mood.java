@@ -1,4 +1,4 @@
-package org.example.melodymatch;
+package org.example.melodymatch.enums;
 
 public enum Mood {
     SAD("acoustic"),
