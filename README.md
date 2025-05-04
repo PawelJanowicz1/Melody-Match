@@ -1,6 +1,6 @@
 ## :bookmark_tabs: About This Project
 
-MelodyMatch is an application that fetches 4 songs from the Spotify API based on the user's mood. By providing a mood query, the app returns a playlist tailored to fit the emotional tone, using the power of Spotify's vast music library to match the requested mood.
+Melody Match is an application that fetches 4 songs from the Spotify API based on the user's mood. By providing a mood query, the app returns a playlist tailored to fit the emotional tone, using the power of Spotify's vast music library to match the requested mood.
 
 ## :hammer_and_wrench: Used Technologies
 
