@@ -18,11 +18,11 @@ MelodyMatch is an application that fetches 4 songs from the Spotify API based on
 
 Happy json response (Unregistered)     |  Happy json response (Unregistered) (pretty)
 :------------------------:|:-------------------------:
-![Happy json response](src/main/resources/static/images/json_response_happy_from_spotify_api.png)  |  ![Happy json response (pretty)](src/main/resources/static/images/json_response_happy_from_spotify_api_pretty.png)
+![Happy json response (Unregistered)](src/main/resources/static/images/json_response_happy_from_spotify_api.png)  |  ![Happy json response (Unregistered) (pretty)](src/main/resources/static/images/json_response_happy_from_spotify_api_pretty.png)
 
 Sad json response (Unregistered)     |  Sad json response (Unregistered) (pretty)
 :------------------------:|:-------------------------:
-![Sad json response](src/main/resources/static/images/json_response_sad_from_spotify_api.png)  |  ![Sad json response (pretty)](src/main/resources/static/images/json_response_sad_from_spotify_api_pretty.png)
+![Sad json response (Unregistered)](src/main/resources/static/images/json_response_sad_from_spotify_api.png)  |  ![Sad json response (Unregistered) (pretty)](src/main/resources/static/images/json_response_sad_from_spotify_api_pretty.png)
 
 Register user      |  Login
 :------------------------:|:-------------------------:
@@ -31,4 +31,12 @@ Register user      |  Login
 Login success      |  Login failed
 :------------------------:|:-------------------------:
 ![Login success](src/main/resources/static/images/success_login.png)  |  ![Login failed](src/main/resources/static/images/failed_login.png)
+
+Find your song by your mood and save it to your account      |  Saved songs
+:------------------------:|:-------------------------:
+![Find and save song](src/main/resources/static/images/find_song_by_your_mood_and_save_it_on_your_account.png)  |  ![My saved songs](src/main/resources/static/images/my_saved_songs.png)
+
+Delete song from your list      |  List of songs after deleting
+:------------------------:|:-------------------------:
+![Delete song](src/main/resources/static/images/delete_song_from_my_list.png)  |  ![List after deleting](src/main/resources/static/images/my_songs_after_deleting.png)
 
