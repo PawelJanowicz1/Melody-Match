@@ -4,8 +4,8 @@ Melody Match is an application that fetches 4 songs from the Spotify API based o
 
 ## :hammer_and_wrench: Used Technologies
 
-* Java 21
-* Spring Boot 3.2
+* Java 17
+* Spring Boot 3.4
 * Spring Data JPA / Hibernate
 * Spring Security (JWT, role-based authentication)
 * Spring WebClient (from Spring WebFlux)
